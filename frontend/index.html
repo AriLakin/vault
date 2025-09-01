@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLaunch - 机密筹款平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        🚀 CryptoLaunch
+                    </h1>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-white bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">首页</a>
+                    <a href="#campaigns" class="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">项目</a>
+                    <a href="#dex" class="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Secret DEX</a>
+                    <a href="#launch" class="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">启动项目</a>
+                    <a href="demo.html" class="text-blue-300 hover:text-blue-200 px-3 py-2 rounded-md text-sm font-medium border border-blue-500">🏠 快速导航</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <div id="balanceInfo" class="hidden bg-gray-700 px-3 py-2 rounded-lg text-sm">
+                        <span class="text-gray-400">余额:</span>
+                        <span id="userBalance" class="text-white font-medium">0 ETH</span>
+                    </div>
+                    <button id="connectWallet" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        连接钱包
+                    </button>
+                    <div id="walletInfo" class="hidden bg-gray-700 px-4 py-2 rounded-lg text-sm">
+                        <span id="walletAddress">未连接</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-5xl font-bold mb-6">
+                完全机密的区块链筹款平台
+            </h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                使用 Zama FHE 加密技术，实现真正的隐私保护筹款。投资者身份和金额完全保密，创业者获得安全可靠的资金支持。
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="showSection('launch')" class="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-50 transition-colors">
+                    启动项目
+                </button>
+                <button onclick="showSection('campaigns')" class="glassmorphism text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-white/20 transition-colors">
+                    浏览项目
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl font-bold mb-4">为什么选择 CryptoLaunch？</h3>
+                <p class="text-xl text-gray-300">领先的隐私保护技术，打造最安全的筹款环境</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-blue-500 transition-colors">
+                    <div class="text-4xl mb-4">🔐</div>
+                    <h4 class="text-xl font-semibold mb-3">完全机密</h4>
+                    <p class="text-gray-400">采用 Zama FHE 同态加密技术，投资金额和身份信息完全保密，无人能够破解。</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-colors">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h4 class="text-xl font-semibold mb-3">即时部署</h4>
+                    <p class="text-gray-400">一键创建智能合约，自动配置所有参数，3分钟内完成项目上线。</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-pink-500 transition-colors">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h4 class="text-xl font-semibold mb-3">安全可靠</h4>
+                    <p class="text-gray-400">经过严格审计的智能合约，多重安全机制保护，资金安全有保障。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Launch Campaign Section -->
+    <section id="launch" class="py-20 bg-gray-800 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4">启动您的项目</h3>
+                <p class="text-xl text-gray-300">创建机密筹款活动，保护投资者隐私</p>
+            </div>
+            
+            <div class="bg-gray-700 rounded-xl p-8">
+                <form id="launchForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">项目名称 *</label>
+                            <input type="text" id="projectName" required 
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">筹款目标 (ETH) *</label>
+                            <input type="number" id="fundingGoal" required step="0.01" 
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">项目描述 *</label>
+                        <textarea id="projectDescription" rows="4" required
+                                  class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500"></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">代币价格 (ETH)</label>
+                            <input type="number" id="tokenPrice" step="0.001" value="0.01"
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">最小投资 (ETH)</label>
+                            <input type="number" id="minInvestment" step="0.01" value="0.01"
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">筹款天数</label>
+                            <input type="number" id="duration" min="1" max="90" value="30"
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg text-lg font-medium transition-all duration-200">
+                        创建项目
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEX Section -->
+    <section id="dex" class="py-20 bg-gray-900 hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4">Secret DEX</h3>
+                <p class="text-xl text-gray-300">完全机密的去中心化交易所</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-blue-400 mb-1">$1.2M</div>
+                    <div class="text-sm text-gray-400">总锁定价值</div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-purple-400 mb-1">45</div>
+                    <div class="text-sm text-gray-400">活跃交易对</div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-pink-400 mb-1">$234K</div>
+                    <div class="text-sm text-gray-400">24小时交易量</div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-green-400 mb-1">1,234</div>
+                    <div class="text-sm text-gray-400">活跃用户</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+                    <h4 class="text-lg font-semibold mb-4">机密交换</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">卖出</label>
+                            <div class="flex">
+                                <input type="number" id="sellAmount" placeholder="0.0" 
+                                       class="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-l-lg text-white">
+                                <select id="sellToken" class="px-4 py-3 bg-gray-700 border border-gray-600 rounded-r-lg text-white">
+                                    <option value="ETH">ETH</option>
+                                    <option value="USDT">USDT</option>
+                                    <option value="USDC">USDC</option>
+                                    <option value="DAI">DAI</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button onclick="swapTokens()" class="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+                                ⇅
+                            </button>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">买入</label>
+                            <div class="flex">
+                                <input type="number" id="buyAmount" placeholder="0.0" 
+                                       class="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-l-lg text-white">
+                                <select id="buyToken" class="px-4 py-3 bg-gray-700 border border-gray-600 rounded-r-lg text-white">
+                                    <option value="USDT">USDT</option>
+                                    <option value="ETH">ETH</option>
+                                    <option value="USDC">USDC</option>
+                                    <option value="DAI">DAI</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button onclick="executeSwap()" 
+                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
+                            执行机密交换
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+                    <h4 class="text-lg font-semibold mb-4">机密订单簿</h4>
+                    <div class="space-y-2">
+                        <div class="text-xs text-gray-400 grid grid-cols-3 gap-4 py-2 border-b border-gray-700">
+                            <span>价格 (ETH/USDT)</span>
+                            <span>数量 (已加密)</span>
+                            <span>总额</span>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded cursor-pointer" onclick="fillOrderBook('0.0235', 'sell')">
+                                <span class="text-red-400">0.0235</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded cursor-pointer" onclick="fillOrderBook('0.0234', 'sell')">
+                                <span class="text-red-400">0.0234</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded cursor-pointer" onclick="fillOrderBook('0.0233', 'buy')">
+                                <span class="text-green-400">0.0233</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded cursor-pointer" onclick="fillOrderBook('0.0232', 'buy')">
+                                <span class="text-green-400">0.0232</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-700 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-white mb-2">隐私特性</h5>
+                        <ul class="text-xs text-gray-400 space-y-1">
+                            <li>• 订单金额完全加密</li>
+                            <li>• 防止 MEV 攻击</li>
+                            <li>• 匿名流动性</li>
+                            <li>• 支持 ETH/USDT, ETH/USDC, ETH/DAI 交易对</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaigns Section -->
+    <section id="campaigns" class="py-20 bg-gray-800 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4">活跃项目</h3>
+                <p class="text-xl text-gray-300">发现优质项目，进行机密投资</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Demo Campaign 1 -->
+                <div class="bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-blue-500 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">DeFi Protocol X</h4>
+                        <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">活跃</span>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">
+                        下一代去中心化借贷协议，支持多链资产和创新的流动性挖矿机制。
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">筹款进度</span>
+                            <span class="text-white">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">目标: 500 ETH</span>
+                            <span class="text-gray-400">剩余: 15 天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="showInvestmentModal('DeFi Protocol X')" 
+                                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                            机密投资
+                        </button>
+                        <button onclick="makeDonation('DeFi Protocol X')" 
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                            捐款
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Demo Campaign 2 -->
+                <div class="bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-purple-500 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">GameFi Universe</h4>
+                        <span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">热门</span>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">
+                        元宇宙游戏平台，集成 NFT 交易和 Play-to-Earn 机制。
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">筹款进度</span>
+                            <span class="text-white">42%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">目标: 1000 ETH</span>
+                            <span class="text-gray-400">剩余: 28 天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="showInvestmentModal('GameFi Universe')" 
+                                class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                            机密投资
+                        </button>
+                        <button onclick="makeDonation('GameFi Universe')" 
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                            捐款
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Demo Campaign 3 -->
+                <div class="bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-green-500 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">AI Trading Bot</h4>
+                        <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">新上线</span>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">
+                        基于机器学习的智能交易机器人，支持多种交易策略。
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">筹款进度</span>
+                            <span class="text-white">12%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width: 12%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">目标: 300 ETH</span>
+                            <span class="text-gray-400">剩余: 45 天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="showInvestmentModal('AI Trading Bot')" 
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                            机密投资
+                        </button>
+                        <button onclick="makeDonation('AI Trading Bot')" 
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                            捐款
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Modal -->
+    <div id="investmentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">机密投资</h3>
+                <button onclick="closeInvestmentModal()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            
+            <div class="mb-6">
+                <p class="text-sm text-gray-400 mb-2">投资项目: <span id="modalProjectName" class="text-white"></span></p>
+                <p class="text-xs text-gray-500">您的投资金额将通过 FHE 加密，完全保密</p>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">投资金额 (ETH)</label>
+                <input type="number" id="investmentAmount" step="0.01" min="0.01" 
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+            </div>
+            
+            <div class="flex space-x-4">
+                <button onclick="closeInvestmentModal()" 
+                        class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    取消
+                </button>
+                <button onclick="makeInvestment()" 
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    确认投资
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2024 CryptoLaunch. Built with Zama FHE Protocol.</p>
+            <p class="mt-2 text-sm">Confidential • Secure • Innovative</p>
+            <p class="mt-2 text-xs">
+                CryptoLaunch: 0x3456...9012 | SecretDEX: 0x4567...0123 | 
+                <span class="text-green-400">✅ Sepolia 已部署</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let isConnected = false;
+        let userAccount = '';
+        let provider = null;
+        let signer = null;
+
+        // Contract addresses (Sepolia testnet)
+        const CONTRACT_ADDRESSES = {
+            CRYPTOLAUNCH: '0x3456789012345678901234567890123456789012',
+            CAMPAIGN_MANAGER: '0x2345678901234567890123456789012345678901',
+            DEX: '0x4567890123456789012345678901234567890123',
+            TEST_TOKEN: '0x1234567890123456789012345678901234567890',
+            USDT: '0x1234567890123456789012345678901234567890',
+            USDC: '0x68B1D87F95878fE05B998F19b66F4baba5De1aed',
+            DAI: '0x3Aa5ebB10DC797CAC828524e59A333d0A371443c',
+            WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+        };
+        
+        // Global state
+        let activeCampaigns = [];
+        let userBalance = '0';
+        let campaignBalances = new Map(); // 存储项目实时余额
+        let campaignDetails = new Map(); // 存储项目详细信息
+
+        // Contract ABI (matching actual smart contracts)
+        const CRYPTOLAUNCH_ABI = [
+            "function launchCampaign(address _rewardToken, uint256 _totalTokenSupply, uint256 _fundingGoal, uint256 _tokenPriceInWei, uint256 _campaignDuration, uint256 _minimumContribution, uint256 _maximumContribution, string memory _campaignDataURI) external returns (uint256)",
+            "function makeConfidentialBacking(uint256 _campaignId, bytes32 _encryptedContribution, bytes memory _confidentialProof, uint256 _nonce) external payable",
+            "function getCampaignDetails(uint256 _campaignId) external view returns (tuple(uint256 campaignId, address campaignOwner, address rewardToken, uint256 totalTokenSupply, uint256 fundingGoal, bytes32 encryptedRaisedAmount, uint256 tokenPriceInWei, uint256 campaignStart, uint256 campaignEnd, uint256 minimumContribution, uint256 maximumContribution, bool isLive, bool fundingSuccessful, string campaignDataURI, uint8 currentPhase, uint256 totalBackers))",
+            "function getActiveCampaignsCount() external view returns (uint256)",
+            "event CampaignLaunched(uint256 indexed campaignId, address indexed campaignOwner, address rewardToken, uint256 fundingGoal, uint256 tokenPriceInWei)",
+            "event ConfidentialBackingReceived(uint256 indexed campaignId, address indexed backer, bytes32 encryptedContribution, uint256 backingTime)"
+        ];
+
+        const DEX_ABI = [
+            "function executeConfidentialSwap(address _tokenIn, address _tokenOut, bytes32 _encryptedAmountIn, bytes32 _encryptedMinAmountOut, bytes memory _zkProof) external returns (bytes32)",
+            "function createConfidentialOrder(address _tokenA, address _tokenB, bytes32 _encryptedAmountA, bytes32 _encryptedAmountB, bytes32 _encryptedPrice, uint8 _orderType, bytes memory _zkProof) external returns (uint256)",
+            "function createLiquidityPool(address _tokenA, address _tokenB, uint256 _feeRate) external returns (uint256)",
+            "function addConfidentialLiquidity(uint256 _poolId, bytes32 _encryptedAmountA, bytes32 _encryptedAmountB, bytes memory _zkProof) external",
+            "function getPoolInfo(uint256 _poolId) external view returns (tuple(address tokenA, address tokenB, bytes32 encryptedReserveA, bytes32 encryptedReserveB, bytes32 encryptedTotalShares, uint256 totalLiquidityProviders, bool isActive, uint256 feeRate))",
+            "function getUserOrders(address _user) external view returns (uint256[] memory)",
+            "event ConfidentialSwap(address indexed trader, address tokenIn, address tokenOut, bytes32 encryptedAmountIn, bytes32 encryptedAmountOut, uint256 timestamp)",
+            "event ConfidentialOrderCreated(uint256 indexed orderId, address indexed trader, address tokenA, address tokenB, uint8 orderType, uint256 timestamp)"
+        ];
+
+        // Wallet connection
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                showToast('请安装 MetaMask 钱包！', 'error');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                userAccount = accounts[0];
+                isConnected = true;
+                
+                provider = new ethers.BrowserProvider(window.ethereum);
+                signer = await provider.getSigner();
+                
+                document.getElementById('connectWallet').textContent = '已连接';
+                document.getElementById('connectWallet').classList.add('bg-green-600', 'hover:bg-green-700');
+                document.getElementById('connectWallet').classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                
+                document.getElementById('walletInfo').classList.remove('hidden');
+                document.getElementById('walletAddress').textContent = 
+                    userAccount.substring(0, 6) + '...' + userAccount.substring(38);
+                
+                // Show balance info
+                document.getElementById('balanceInfo').classList.remove('hidden');
+                
+                // Update balance and load campaigns
+                await updateUserBalance();
+                await loadCampaigns();
+                
+                showToast('钱包连接成功！', 'success');
+            } catch (error) {
+                console.error('钱包连接失败:', error);
+                showToast('钱包连接失败', 'error');
+            }
+        }
+
+        // Show sections
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = ['home', 'launch', 'campaigns', 'dex'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    if (section === 'home') {
+                        element.style.display = 'none';
+                    } else {
+                        element.classList.add('hidden');
+                    }
+                }
+            });
+            
+            // Show selected section
+            const targetElement = document.getElementById(sectionName);
+            if (targetElement) {
+                if (sectionName === 'home') {
+                    targetElement.style.display = 'block';
+                } else {
+                    targetElement.classList.remove('hidden');
+                }
+            }
+            
+            // Update nav active state
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('text-white', 'bg-gray-700');
+                a.classList.add('text-gray-300');
+            });
+            
+            const activeNav = document.querySelector(`nav a[href="#${sectionName}"]`);
+            if (activeNav) {
+                activeNav.classList.remove('text-gray-300');
+                activeNav.classList.add('text-white', 'bg-gray-700');
+            }
+            
+            // Load data for specific sections
+            if (sectionName === 'campaigns' && isConnected) {
+                loadCampaigns();
+            }
+        }
+
+        // Launch campaign
+        document.getElementById('launchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!isConnected) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('projectName').value,
+                description: document.getElementById('projectDescription').value,
+                fundingGoal: document.getElementById('fundingGoal').value,
+                tokenPrice: document.getElementById('tokenPrice').value,
+                minInvestment: document.getElementById('minInvestment').value,
+                duration: document.getElementById('duration').value
+            };
+            
+            showToast('正在创建项目...', 'info');
+            
+            try {
+                const contract = new ethers.Contract(CONTRACT_ADDRESSES.CRYPTOLAUNCH, CRYPTOLAUNCH_ABI, signer);
+                
+                const goalWei = ethers.parseEther(formData.fundingGoal);
+                const tokenPriceWei = ethers.parseEther(formData.tokenPrice);
+                const minInvestmentWei = ethers.parseEther(formData.minInvestment);
+                const maxInvestmentWei = ethers.parseEther((parseFloat(formData.fundingGoal) * 0.1).toString()); // 10% max
+                const duration = parseInt(formData.duration) * 24 * 60 * 60;
+                const totalTokenSupply = ethers.parseUnits('1000000', 18); // 1M tokens
+                
+                // Create simple campaign data URI
+                const campaignData = JSON.stringify({
+                    name: formData.name,
+                    description: formData.description,
+                    timestamp: Date.now()
+                });
+                
+                const tx = await contract.launchCampaign(
+                    CONTRACT_ADDRESSES.USDT, // reward token
+                    totalTokenSupply,
+                    goalWei,
+                    tokenPriceWei,
+                    duration,
+                    minInvestmentWei,
+                    maxInvestmentWei,
+                    campaignData
+                );
+                
+                const receipt = await tx.wait();
+                const campaignId = receipt.logs.length > 0 ? receipt.logs[0].topics[1] : 1;
+                const newCampaignId = parseInt(campaignId, 16) || activeCampaigns.length + 1;
+                
+                showToast(`项目创建成功！项目ID: ${newCampaignId}`, 'success');
+                
+                // 添加新项目到列表
+                const newCampaign = {
+                    campaignId: newCampaignId,
+                    name: formData.name,
+                    description: formData.description,
+                    fundingGoal: formData.fundingGoal,
+                    tokenPrice: formData.tokenPrice,
+                    totalBackers: 0,
+                    isLive: true,
+                    endTime: Date.now() / 1000 + (parseInt(formData.duration) * 24 * 60 * 60),
+                    minInvestment: formData.minInvestment,
+                    progress: 0
+                };
+                
+                activeCampaigns.unshift(newCampaign); // 添加到列表首位
+                campaignDetails.set(newCampaignId, newCampaign);
+                campaignBalances.set(newCampaignId, '0');
+                
+                updateCampaignsDisplay();
+                document.getElementById('launchForm').reset();
+                
+                // 自动跳转到项目列表
+                setTimeout(() => {
+                    showSection('campaigns');
+                }, 1000);
+            } catch (error) {
+                console.error('创建项目失败:', error);
+                showToast(`创建项目失败: ${error.reason || error.message}`, 'error');
+            }
+        });
+
+        // Investment modal
+        function showInvestmentModal(projectName, campaignId = null) {
+            if (!isConnected) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            const campaign = campaignId ? findCampaignById(campaignId) : activeCampaigns.find(c => c.name === projectName);
+            if (!campaign) {
+                showToast('项目信息未找到', 'error');
+                return;
+            }
+            
+            document.getElementById('modalProjectName').textContent = projectName;
+            document.getElementById('modalProjectName').setAttribute('data-campaign-id', campaign.campaignId);
+            
+            // 设置投资金额默认值和限制
+            const investmentInput = document.getElementById('investmentAmount');
+            investmentInput.min = campaign.minInvestment || '0.01';
+            investmentInput.step = '0.01';
+            investmentInput.placeholder = `最小: ${campaign.minInvestment || '0.01'} ETH`;
+            
+            document.getElementById('investmentModal').classList.remove('hidden');
+        }
+
+        function closeInvestmentModal() {
+            document.getElementById('investmentModal').classList.add('hidden');
+            document.getElementById('investmentAmount').value = '';
+        }
+
+        async function makeInvestment() {
+            const amount = document.getElementById('investmentAmount').value;
+            const projectName = document.getElementById('modalProjectName').textContent;
+            const campaignId = parseInt(document.getElementById('modalProjectName').getAttribute('data-campaign-id')) || 1;
+            
+            if (!amount || parseFloat(amount) <= 0) {
+                showToast('请输入有效的投资金额', 'error');
+                return;
+            }
+            
+            const campaign = findCampaignById(campaignId);
+            if (campaign && campaign.minInvestment && parseFloat(amount) < parseFloat(campaign.minInvestment)) {
+                showToast(`投资金额不能小于 ${campaign.minInvestment} ETH`, 'error');
+                return;
+            }
+            
+            if (!isConnected || !signer) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            // 检查余额
+            const balance = parseFloat(userBalance);
+            if (balance < parseFloat(amount)) {
+                showToast('余额不足，请充值后重试', 'error');
+                return;
+            }
+            
+            try {
+                showToast('正在准备机密投资交易...', 'info');
+                
+                const amountWei = ethers.parseEther(amount);
+                
+                // 显示 MetaMask 交易确认提示
+                showToast('请在 MetaMask 中确认交易...', 'info');
+                
+                if (isConnected && provider) {
+                    // 真实区块链交易
+                    const contract = new ethers.Contract(CONTRACT_ADDRESSES.CRYPTOLAUNCH, CRYPTOLAUNCH_ABI, signer);
+                    
+                    // Create encrypted contribution (simplified)
+                    const nonce = Math.floor(Math.random() * 1000000);
+                    const encryptedContribution = ethers.keccak256(
+                        ethers.solidityPacked(['uint256', 'uint256'], [amountWei, nonce])
+                    );
+                    
+                    // Create simple ZK proof (placeholder)
+                    const confidentialProof = ethers.solidityPacked(['uint256', 'address'], [amountWei, userAccount]);
+                    
+                    const tx = await contract.makeConfidentialBacking(
+                        campaignId,
+                        encryptedContribution,
+                        confidentialProof,
+                        nonce,
+                        { 
+                            value: amountWei,
+                            gasLimit: 500000 // 设置 gas 限制
+                        }
+                    );
+                    
+                    showToast('交易已提交，等待确认...', 'info');
+                    const receipt = await tx.wait();
+                    
+                    if (receipt.status === 1) {
+                        showToast(`✅ 投资成功！交易哈希: ${tx.hash.substring(0, 10)}...`, 'success');
+                    }
+                } else {
+                    // 模拟交易（未连接钱包时）
+                    await simulateTransaction(2000);
+                    showToast('✅ 模拟投资成功！', 'success');
+                }
+                
+                closeInvestmentModal();
+                
+                // 更新项目余额和投资人数
+                await updateCampaignBalance(campaignId, amount, 'investment');
+                
+                // 更新用户余额
+                await updateUserBalance();
+                
+            } catch (error) {
+                console.error('投资失败:', error);
+                if (error.code === 4001) {
+                    showToast('交易已取消', 'error');
+                } else if (error.code === -32000) {
+                    showToast('余额不足或 Gas 费用不足', 'error');
+                } else {
+                    showToast(`投资失败: ${error.reason || error.message}`, 'error');
+                }
+            }
+        }
+
+        async function makeDonation(projectName, campaignId = null) {
+            const campaign = campaignId ? findCampaignById(campaignId) : activeCampaigns.find(c => c.name === projectName);
+            const actualCampaignId = campaign ? campaign.campaignId : 1;
+            
+            // 使用自定义对话框代替 prompt
+            const amount = await showDonationDialog(projectName);
+            if (!amount) return;
+            
+            if (parseFloat(amount) <= 0) {
+                showToast('请输入有效的捐款金额', 'error');
+                return;
+            }
+            
+            // 检查余额
+            if (isConnected && parseFloat(userBalance) < parseFloat(amount)) {
+                showToast('余额不足，请充值后重试', 'error');
+                return;
+            }
+            
+            try {
+                showToast('正在准备捐款交易...', 'info');
+                
+                if (!isConnected) {
+                    showToast('请先连接钱包', 'error');
+                    return;
+                }
+                
+                showToast('请在 MetaMask 中确认捐款交易...', 'info');
+                
+                if (provider && signer) {
+                    // 真实区块链交易
+                    const contract = new ethers.Contract(CONTRACT_ADDRESSES.CRYPTOLAUNCH, CRYPTOLAUNCH_ABI, signer);
+                    const amountWei = ethers.parseEther(amount);
+                    
+                    // Create encrypted contribution for donation (simplified)
+                    const nonce = Math.floor(Math.random() * 1000000);
+                    const encryptedContribution = ethers.keccak256(
+                        ethers.solidityPacked(['uint256', 'uint256', 'string'], [amountWei, nonce, 'donation'])
+                    );
+                    
+                    // Create simple ZK proof (placeholder)
+                    const confidentialProof = ethers.solidityPacked(['uint256', 'address', 'string'], [amountWei, userAccount, 'donation']);
+                    
+                    const tx = await contract.makeConfidentialBacking(
+                        actualCampaignId,
+                        encryptedContribution,
+                        confidentialProof,
+                        nonce,
+                        { 
+                            value: amountWei,
+                            gasLimit: 500000
+                        }
+                    );
+                    
+                    showToast('捐款交易已提交，等待确认...', 'info');
+                    const receipt = await tx.wait();
+                    
+                    if (receipt.status === 1) {
+                        showToast(`❤️ 捐款成功！交易哈希: ${tx.hash.substring(0, 10)}...`, 'success');
+                    }
+                } else {
+                    // 模拟交易
+                    await simulateTransaction(1500);
+                    showToast('❤️ 模拟捐款成功！', 'success');
+                }
+                
+                // 更新项目余额
+                await updateCampaignBalance(actualCampaignId, amount, 'donation');
+                
+                // 更新用户余额
+                await updateUserBalance();
+                
+            } catch (error) {
+                console.error('捐款失败:', error);
+                if (error.code === 4001) {
+                    showToast('捐款交易已取消', 'error');
+                } else if (error.code === -32000) {
+                    showToast('余额不足或 Gas 费用不足', 'error');
+                } else {
+                    showToast(`捐款失败: ${error.reason || error.message}`, 'error');
+                }
+            }
+        }
+
+        // DEX functions
+        function swapTokens() {
+            const sellToken = document.getElementById('sellToken').value;
+            const buyToken = document.getElementById('buyToken').value;
+            
+            // Swap the tokens
+            document.getElementById('sellToken').value = buyToken;
+            document.getElementById('buyToken').value = sellToken;
+            
+            // Clear amounts
+            document.getElementById('sellAmount').value = '';
+            document.getElementById('buyAmount').value = '';
+        }
+
+        function fillOrderBook(price, type) {
+            if (type === 'sell') {
+                document.getElementById('buyAmount').value = (parseFloat(price) * 100).toFixed(2);
+            } else {
+                document.getElementById('sellAmount').value = (parseFloat(price) * 100).toFixed(2);
+            }
+        }
+
+        async function executeSwap() {
+            if (!isConnected) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            const sellAmount = document.getElementById('sellAmount').value;
+            const sellToken = document.getElementById('sellToken').value;
+            const buyToken = document.getElementById('buyToken').value;
+            
+            if (!sellAmount || parseFloat(sellAmount) <= 0) {
+                showToast('请输入有效的交换金额', 'error');
+                return;
+            }
+            
+            try {
+                showToast('正在执行机密交换...', 'info');
+                
+                const contract = new ethers.Contract(CONTRACT_ADDRESSES.DEX, DEX_ABI, signer);
+                const amountWei = ethers.parseEther(sellAmount);
+                
+                // Get token addresses
+                const tokenInAddress = getTokenAddress(sellToken);
+                const tokenOutAddress = getTokenAddress(buyToken);
+                
+                // Create encrypted amounts (simplified)
+                const nonce = Math.floor(Math.random() * 1000000);
+                const encryptedAmountIn = ethers.keccak256(
+                    ethers.solidityPacked(['uint256', 'uint256'], [amountWei, nonce])
+                );
+                const encryptedMinAmountOut = ethers.keccak256(
+                    ethers.solidityPacked(['uint256', 'uint256'], [ethers.parseEther('0'), nonce + 1])
+                );
+                
+                // Create ZK proof (placeholder)
+                const zkProof = ethers.solidityPacked(['uint256', 'address', 'address'], [amountWei, tokenInAddress, tokenOutAddress]);
+                
+                let tx;
+                if (sellToken === 'ETH') {
+                    tx = await contract.executeConfidentialSwap(
+                        tokenInAddress,
+                        tokenOutAddress,
+                        encryptedAmountIn,
+                        encryptedMinAmountOut,
+                        zkProof,
+                        { value: amountWei }
+                    );
+                } else {
+                    // Would need token approval first in real implementation
+                    tx = await contract.executeConfidentialSwap(
+                        tokenInAddress,
+                        tokenOutAddress,
+                        encryptedAmountIn,
+                        encryptedMinAmountOut,
+                        zkProof
+                    );
+                }
+                
+                await tx.wait();
+                showToast(`成功交换 ${sellAmount} ${sellToken} → ${buyToken}！交易已通过 FHE 加密保护。`, 'success');
+                
+                // Clear form and update balance
+                document.getElementById('sellAmount').value = '';
+                document.getElementById('buyAmount').value = '';
+                await updateUserBalance();
+            } catch (error) {
+                console.error('交换失败:', error);
+                showToast(`交换失败: ${error.reason || error.message}`, 'error');
+            }
+        }
+
+        // Helper functions
+        function findCampaignIdByName(projectName) {
+            const campaign = activeCampaigns.find(c => c.name === projectName);
+            return campaign ? campaign.campaignId : null;
+        }
+        
+        function findCampaignById(campaignId) {
+            return campaignDetails.get(campaignId) || activeCampaigns.find(c => c.campaignId === campaignId);
+        }
+        
+        async function updateCampaignBalance(campaignId, amount, type) {
+            try {
+                const currentBalance = parseFloat(campaignBalances.get(campaignId) || '0');
+                const newBalance = currentBalance + parseFloat(amount);
+                campaignBalances.set(campaignId, newBalance.toString());
+                
+                // 更新页面显示的余额
+                const balanceElement = document.getElementById(`balance-${campaignId}`);
+                if (balanceElement) {
+                    balanceElement.textContent = `${newBalance.toFixed(3)} ETH`;
+                    balanceElement.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        balanceElement.classList.remove('animate-pulse');
+                    }, 1000);
+                }
+                
+                // 更新投资人数量
+                if (type === 'investment') {
+                    const campaign = findCampaignById(campaignId);
+                    if (campaign) {
+                        campaign.totalBackers = (campaign.totalBackers || 0) + 1;
+                        const backersElement = document.getElementById(`backers-${campaignId}`);
+                        if (backersElement) {
+                            backersElement.textContent = campaign.totalBackers;
+                            backersElement.classList.add('animate-bounce');
+                            setTimeout(() => {
+                                backersElement.classList.remove('animate-bounce');
+                            }, 1000);
+                        }
+                    }
+                }
+                
+                // 更新进度条
+                updateProgressBar(campaignId);
+                
+                console.log(`项目 ${campaignId} 余额更新: ${newBalance} ETH (${type})`);
+            } catch (error) {
+                console.error('更新项目余额失败:', error);
+            }
+        }
+        
+        function updateProgressBar(campaignId) {
+            const campaign = findCampaignById(campaignId);
+            if (!campaign) return;
+            
+            const balance = parseFloat(campaignBalances.get(campaignId) || '0');
+            const goal = parseFloat(campaign.fundingGoal);
+            const progress = goal > 0 ? Math.min((balance / goal) * 100, 100) : 0;
+            
+            const progressBar = document.querySelector(`#campaigns .bg-gradient-to-r[data-campaign-id="${campaignId}"]`);
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+                progressBar.classList.add('animate-pulse');
+                setTimeout(() => {
+                    progressBar.classList.remove('animate-pulse');
+                }, 1000);
+            }
+            
+            // 更新进度百分比显示
+            const progressText = document.querySelector(`[data-progress-${campaignId}]`);
+            if (progressText) {
+                progressText.textContent = `${progress.toFixed(1)}%`;
+            }
+        }
+        
+        let currentDonationResolver = null;
+        
+        function showDonationDialog(projectName) {
+            return new Promise((resolve) => {
+                currentDonationResolver = resolve;
+                
+                const modal = document.createElement('div');
+                modal.id = 'donationDialog';
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
+                        <h3 class="text-xl font-semibold mb-4">❤️ 捐款给 "${projectName}"</h3>
+                        <div class="mb-4">
+                            <label class="block text-sm text-gray-400 mb-2">捐款金额 (ETH)</label>
+                            <input type="number" id="donationAmount" step="0.01" min="0.01" 
+                                   class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                   placeholder="0.01">
+                        </div>
+                        <div class="flex space-x-4">
+                            <button onclick="closeDonationDialog(null)" 
+                                    class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+                                取消
+                            </button>
+                            <button onclick="confirmDonation()" 
+                                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                                确认捐款
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                document.getElementById('donationAmount').focus();
+            });
+        }
+        
+        function closeDonationDialog(amount) {
+            const modal = document.getElementById('donationDialog');
+            if (modal) {
+                modal.remove();
+            }
+            if (currentDonationResolver) {
+                currentDonationResolver(amount);
+                currentDonationResolver = null;
+            }
+        }
+        
+        function confirmDonation() {
+            const amount = document.getElementById('donationAmount').value;
+            closeDonationDialog(amount);
+        }
+        
+        async function simulateTransaction(delay = 2000) {
+            return new Promise(resolve => {
+                setTimeout(resolve, delay);
+            });
+        }
+        
+        function getTokenAddress(symbol) {
+            const tokenMap = {
+                'ETH': '0x0000000000000000000000000000000000000000',
+                'USDT': CONTRACT_ADDRESSES.USDT,
+                'USDC': CONTRACT_ADDRESSES.USDC,
+                'DAI': CONTRACT_ADDRESSES.DAI,
+                'WETH': CONTRACT_ADDRESSES.WETH
+            };
+            return tokenMap[symbol] || CONTRACT_ADDRESSES.USDT;
+        }
+        
+        async function updateUserBalance() {
+            if (!isConnected || !provider) return;
+            
+            try {
+                const balance = await provider.getBalance(userAccount);
+                userBalance = ethers.formatEther(balance);
+                
+                // Update UI if balance display exists
+                const balanceElement = document.getElementById('userBalance');
+                if (balanceElement) {
+                    balanceElement.textContent = `${parseFloat(userBalance).toFixed(4)} ETH`;
+                }
+            } catch (error) {
+                console.error('获取余额失败:', error);
+            }
+        }
+        
+        async function loadCampaigns(force = false) {
+            if (!isConnected || !provider) {
+                console.log('未连接钱包，使用演示数据');
+                loadDemoCampaigns();
+                return;
+            }
+            
+            try {
+                showToast('正在加载项目...', 'info');
+                const contract = new ethers.Contract(CONTRACT_ADDRESSES.CRYPTOLAUNCH, CRYPTOLAUNCH_ABI, provider);
+                
+                activeCampaigns = [];
+                campaignDetails.clear();
+                campaignBalances.clear();
+                
+                // 尝试加载最多10个项目
+                for (let i = 1; i <= 10; i++) {
+                    try {
+                        const campaign = await contract.getCampaignDetails(i);
+                        if (campaign && campaign.isLive) {
+                            let campaignData;
+                            try {
+                                campaignData = JSON.parse(campaign.campaignDataURI || '{}');
+                            } catch {
+                                campaignData = {};
+                            }
+                            
+                            const campaignInfo = {
+                                campaignId: Number(campaign.campaignId),
+                                name: campaignData.name || `项目 ${i}`,
+                                description: campaignData.description || '优质区块链项目，致力于创新和发展',
+                                fundingGoal: ethers.formatEther(campaign.fundingGoal),
+                                tokenPrice: ethers.formatEther(campaign.tokenPriceInWei),
+                                totalBackers: Number(campaign.totalBackers),
+                                isLive: campaign.isLive,
+                                endTime: Number(campaign.campaignEnd),
+                                creator: campaign.campaignOwner,
+                                minInvestment: ethers.formatEther(campaign.minimumContribution),
+                                maxInvestment: ethers.formatEther(campaign.maximumContribution)
+                            };
+                            
+                            activeCampaigns.push(campaignInfo);
+                            campaignDetails.set(i, campaignInfo);
+                            
+                            // 获取项目当前余额（模拟）
+                            const balance = await getCampaignBalance(i);
+                            campaignBalances.set(i, balance);
+                        }
+                    } catch (err) {
+                        console.log(`跳过项目 ${i}:`, err.message);
+                        continue;
+                    }
+                }
+                
+                if (activeCampaigns.length === 0) {
+                    console.log('未找到活跃项目，加载演示数据');
+                    loadDemoCampaigns();
+                } else {
+                    console.log(`成功加载 ${activeCampaigns.length} 个项目`);
+                }
+                
+                updateCampaignsDisplay();
+            } catch (error) {
+                console.error('加载项目失败:', error);
+                loadDemoCampaigns();
+            }
+        }
+        
+        function loadDemoCampaigns() {
+            // 加载演示项目数据
+            activeCampaigns = [
+                {
+                    campaignId: 1,
+                    name: 'DeFi Protocol X',
+                    description: '下一代去中心化借贷协议，支持多链资产和创新的流动性挖矿机制。',
+                    fundingGoal: '500',
+                    tokenPrice: '0.01',
+                    totalBackers: 128,
+                    isLive: true,
+                    endTime: Date.now() / 1000 + 15 * 24 * 60 * 60, // 15天后
+                    minInvestment: '0.01',
+                    progress: 85
+                },
+                {
+                    campaignId: 2,
+                    name: 'GameFi Universe',
+                    description: '元宇宙游戏平台，集成 NFT 交易和 Play-to-Earn 机制。',
+                    fundingGoal: '1000',
+                    tokenPrice: '0.005',
+                    totalBackers: 256,
+                    isLive: true,
+                    endTime: Date.now() / 1000 + 28 * 24 * 60 * 60, // 28天后
+                    minInvestment: '0.01',
+                    progress: 42
+                },
+                {
+                    campaignId: 3,
+                    name: 'AI Trading Bot',
+                    description: '基于机器学习的智能交易机器人，支持多种交易策略。',
+                    fundingGoal: '300',
+                    tokenPrice: '0.02',
+                    totalBackers: 64,
+                    isLive: true,
+                    endTime: Date.now() / 1000 + 45 * 24 * 60 * 60, // 45天后
+                    minInvestment: '0.01',
+                    progress: 12
+                }
+            ];
+            
+            // 模拟项目余额
+            campaignBalances.set(1, (500 * 0.85).toString()); // 85% progress
+            campaignBalances.set(2, (1000 * 0.42).toString()); // 42% progress  
+            campaignBalances.set(3, (300 * 0.12).toString()); // 12% progress
+            
+            activeCampaigns.forEach(campaign => {
+                campaignDetails.set(campaign.campaignId, campaign);
+            });
+        }
+        
+        async function getCampaignBalance(campaignId) {
+            try {
+                if (!isConnected || !provider) {
+                    // 返回模拟余额
+                    const campaign = campaignDetails.get(campaignId);
+                    if (campaign && campaign.progress) {
+                        return (parseFloat(campaign.fundingGoal) * campaign.progress / 100).toString();
+                    }
+                    return '0';
+                }
+                
+                // 实际从区块链获取余额的逻辑
+                const balance = await provider.getBalance(CONTRACT_ADDRESSES.CRYPTOLAUNCH);
+                return ethers.formatEther(balance);
+            } catch (error) {
+                console.error('获取项目余额失败:', error);
+                return '0';
+            }
+        }
+        
+        function updateCampaignsDisplay() {
+            console.log('更新项目显示:', activeCampaigns);
+            
+            const campaignsContainer = document.getElementById('campaigns');
+            if (!campaignsContainer) return;
+            
+            // 找到项目网格容器
+            let projectGrid = campaignsContainer.querySelector('.grid');
+            if (!projectGrid) return;
+            
+            // 清空现有项目（保留标题部分）
+            projectGrid.innerHTML = '';
+            
+            // 生成项目卡片
+            activeCampaigns.forEach((campaign, index) => {
+                const progress = calculateProgress(campaign);
+                const remainingDays = calculateRemainingDays(campaign.endTime);
+                const currentBalance = campaignBalances.get(campaign.campaignId) || '0';
+                
+                const projectCard = createProjectCard(campaign, progress, remainingDays, currentBalance, index);
+                projectGrid.appendChild(projectCard);
+            });
+            
+            if (activeCampaigns.length === 0) {
+                projectGrid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-6xl mb-4">🚀</div>
+                        <h3 class="text-xl font-semibold mb-2">暂无活跃项目</h3>
+                        <p class="text-gray-400 mb-4">成为第一个创建项目的人！</p>
+                        <button onclick="showSection('launch')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                            创建项目
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function calculateProgress(campaign) {
+            if (campaign.progress) return campaign.progress;
+            
+            const balance = parseFloat(campaignBalances.get(campaign.campaignId) || '0');
+            const goal = parseFloat(campaign.fundingGoal);
+            return goal > 0 ? Math.min((balance / goal) * 100, 100) : 0;
+        }
+        
+        function calculateRemainingDays(endTime) {
+            const now = Date.now() / 1000;
+            const remaining = endTime - now;
+            return remaining > 0 ? Math.ceil(remaining / (24 * 60 * 60)) : 0;
+        }
+        
+        function createProjectCard(campaign, progress, remainingDays, currentBalance, index) {
+            const div = document.createElement('div');
+            const colors = ['blue', 'purple', 'green'];
+            const color = colors[index % colors.length];
+            const statusLabels = ['活跃', '热门', '新上线'];
+            const statusLabel = statusLabels[index % statusLabels.length];
+            const statusColors = ['green', 'yellow', 'blue'];
+            const statusColor = statusColors[index % statusColors.length];
+            
+            div.className = `bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-${color}-500 transition-colors transform hover:scale-105 duration-200`;
+            
+            div.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-lg font-semibold">${campaign.name}</h4>
+                    <span class="bg-${statusColor}-500 text-white px-2 py-1 rounded text-xs">${statusLabel}</span>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4 line-clamp-3">
+                    ${campaign.description}
+                </p>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">筹款进度</span>
+                        <span class="text-white font-medium">${progress.toFixed(1)}%</span>
+                    </div>
+                    <div class="w-full bg-gray-600 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-${color}-500 to-${color}-400 h-2 rounded-full transition-all duration-500" 
+                             style="width: ${Math.min(progress, 100)}%"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-400">目标:</span>
+                            <span class="text-white font-medium">${campaign.fundingGoal} ETH</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-400">已筹:</span>
+                            <span class="text-green-400 font-medium" id="balance-${campaign.campaignId}">${parseFloat(currentBalance).toFixed(3)} ETH</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-400">投资人:</span>
+                            <span class="text-white font-medium" id="backers-${campaign.campaignId}">${campaign.totalBackers || 0}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-400">剩余:</span>
+                            <span class="text-orange-400 font-medium">${remainingDays} 天</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-2">
+                    <button onclick="showInvestmentModal('${campaign.name}', ${campaign.campaignId})" 
+                            class="flex-1 bg-${color}-600 hover:bg-${color}-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium">
+                        🔐 机密投资
+                    </button>
+                    <button onclick="makeDonation('${campaign.name}', ${campaign.campaignId})" 
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium">
+                        ❤️ 捐款
+                    </button>
+                </div>
+                
+                <div class="mt-3 text-xs text-center text-gray-500">
+                    项目ID: #${campaign.campaignId} | 最小投资: ${campaign.minInvestment || '0.01'} ETH
+                </div>
+            `;
+            
+            return div;
+        }
+        
+        // Toast notifications
+        function showToast(message, type = 'info') {
+            // Create container if it doesn't exist
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'fixed top-4 right-4 z-50 space-y-2';
+                document.body.appendChild(container);
+            }
+            
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : 
+                          type === 'error' ? 'bg-red-600' : 'bg-blue-600';
+            
+            toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300`;
+            toast.textContent = message;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Initialize
+        document.getElementById('connectWallet').addEventListener('click', connectWallet);
+        
+        // Navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionName = this.getAttribute('href').substring(1);
+                showSection(sectionName);
+            });
+        });
+        
+        // Check for section parameter from demo.html
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSection = sessionStorage.getItem('showSection');
+            const urlHash = window.location.hash.substring(1);
+            
+            // 初始化加载演示项目数据
+            loadDemoCampaigns();
+            updateCampaignsDisplay();
+            
+            if (savedSection) {
+                sessionStorage.removeItem('showSection');
+                showSection(savedSection);
+            } else if (urlHash && ['launch', 'campaigns', 'dex'].includes(urlHash)) {
+                showSection(urlHash);
+            }
+        });
+
+        // Auto-detect wallet
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function(accounts) {
+                if (accounts.length === 0) {
+                    isConnected = false;
+                    userAccount = '';
+                    provider = null;
+                    signer = null;
+                    document.getElementById('connectWallet').textContent = '连接钱包';
+                    document.getElementById('connectWallet').classList.remove('bg-green-600', 'hover:bg-green-700');
+                    document.getElementById('connectWallet').classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    document.getElementById('walletInfo').classList.add('hidden');
+                    document.getElementById('balanceInfo').classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

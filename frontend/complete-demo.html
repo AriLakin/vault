@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLaunch - 完整功能演示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+        }
+        .demo-card {
+            transition: all 0.3s ease;
+        }
+        .demo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    🚀 CryptoLaunch - 完整功能演示
+                </h1>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                        进入主平台
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Status Display -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">📊 平台状态</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-400">🟢</div>
+                    <div class="text-sm text-gray-400">服务状态</div>
+                    <div class="text-white font-medium">运行中</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-400">3014</div>
+                    <div class="text-sm text-gray-400">服务端口</div>
+                    <div class="text-white font-medium">HTTP服务器</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-400">3</div>
+                    <div class="text-sm text-gray-400">演示项目</div>
+                    <div class="text-white font-medium">可投资</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-yellow-400">100%</div>
+                    <div class="text-sm text-gray-400">功能完整度</div>
+                    <div class="text-white font-medium">全功能</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Showcase -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- 项目创建 -->
+            <div class="demo-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center mb-4">
+                    <div class="text-3xl mr-3">🚀</div>
+                    <h3 class="text-xl font-semibold">项目创建功能</h3>
+                </div>
+                <p class="text-gray-400 mb-4">
+                    创建新的机密筹款项目，支持自定义参数和FHE加密保护。
+                </p>
+                <div class="space-y-2 mb-4 text-sm">
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>项目信息配置（名称、描述、目标金额）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>投资参数设置（最小投资、代币价格）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>MetaMask 钱包交易确认</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>创建后自动添加到项目列表</span>
+                    </div>
+                </div>
+                <a href="index.html#launch" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg inline-block">
+                    创建项目
+                </a>
+            </div>
+
+            <!-- 项目投资 -->
+            <div class="demo-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center mb-4">
+                    <div class="text-3xl mr-3">💰</div>
+                    <h3 class="text-xl font-semibold">机密投资功能</h3>
+                </div>
+                <p class="text-gray-400 mb-4">
+                    使用FHE加密技术保护投资隐私，支持实时余额更新。
+                </p>
+                <div class="space-y-2 mb-4 text-sm">
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>FHE同态加密保护投资金额</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>MetaMask弹窗确认交易</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>实时更新项目余额和进度</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>投资人数量自动增加</span>
+                    </div>
+                </div>
+                <a href="index.html#campaigns" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg inline-block">
+                    查看项目
+                </a>
+            </div>
+
+            <!-- 捐款功能 -->
+            <div class="demo-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center mb-4">
+                    <div class="text-3xl mr-3">❤️</div>
+                    <h3 class="text-xl font-semibold">项目捐款功能</h3>
+                </div>
+                <p class="text-gray-400 mb-4">
+                    支持对喜欢的项目进行捐款，帮助优质项目快速达成目标。
+                </p>
+                <div class="space-y-2 mb-4 text-sm">
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>自定义捐款对话框</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>余额检查和验证</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>MetaMask交易确认</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>捐款后余额实时更新</span>
+                    </div>
+                </div>
+                <button onclick="testDonation()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                    测试捐款
+                </button>
+            </div>
+
+            <!-- DEX交易 -->
+            <div class="demo-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center mb-4">
+                    <div class="text-3xl mr-3">🔄</div>
+                    <h3 class="text-xl font-semibold">Secret DEX 交易</h3>
+                </div>
+                <p class="text-gray-400 mb-4">
+                    完全机密的去中心化交易所，支持多种ETH交易对。
+                </p>
+                <div class="space-y-2 mb-4 text-sm">
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>支持ETH/USDT, ETH/USDC, ETH/DAI</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>机密订单簿和价格显示</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>MetaMask交易确认</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>防MEV攻击保护</span>
+                    </div>
+                </div>
+                <a href="index.html#dex" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg inline-block">
+                    开始交易
+                </a>
+            </div>
+        </div>
+
+        <!-- Live Demo Projects -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-6">🏆 演示项目展示</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Project 1 -->
+                <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold">DeFi Protocol X</h4>
+                        <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">活跃</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-400">进度</span>
+                            <span class="text-white">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-500 to-blue-400 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+                        <div><span class="text-gray-400">目标:</span> 500 ETH</div>
+                        <div><span class="text-gray-400">已筹:</span> 425 ETH</div>
+                        <div><span class="text-gray-400">投资人:</span> 128</div>
+                        <div><span class="text-gray-400">剩余:</span> 15 天</div>
+                    </div>
+                    <a href="index.html#campaigns" class="text-blue-400 hover:text-blue-300 text-sm">
+                        查看详情 →
+                    </a>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold">GameFi Universe</h4>
+                        <span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">热门</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-400">进度</span>
+                            <span class="text-white">42%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-400 h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+                        <div><span class="text-gray-400">目标:</span> 1000 ETH</div>
+                        <div><span class="text-gray-400">已筹:</span> 420 ETH</div>
+                        <div><span class="text-gray-400">投资人:</span> 256</div>
+                        <div><span class="text-gray-400">剩余:</span> 28 天</div>
+                    </div>
+                    <a href="index.html#campaigns" class="text-purple-400 hover:text-purple-300 text-sm">
+                        查看详情 →
+                    </a>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold">AI Trading Bot</h4>
+                        <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">新上线</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-400">进度</span>
+                            <span class="text-white">12%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full" style="width: 12%"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+                        <div><span class="text-gray-400">目标:</span> 300 ETH</div>
+                        <div><span class="text-gray-400">已筹:</span> 36 ETH</div>
+                        <div><span class="text-gray-400">投资人:</span> 64</div>
+                        <div><span class="text-gray-400">剩余:</span> 45 天</div>
+                    </div>
+                    <a href="index.html#campaigns" class="text-green-400 hover:text-green-300 text-sm">
+                        查看详情 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usage Instructions -->
+        <div class="bg-gray-800 rounded-xl p-6">
+            <h2 class="text-2xl font-semibold mb-6">📝 使用说明</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-blue-400">开始使用</h3>
+                    <ol class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-3 mt-0.5">1</span>
+                            <span>点击"连接钱包"按钮连接MetaMask</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-3 mt-0.5">2</span>
+                            <span>浏览现有项目或创建新项目</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-3 mt-0.5">3</span>
+                            <span>进行投资或捐款，享受隐私保护</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-3 mt-0.5">4</span>
+                            <span>使用Secret DEX进行代币交换</span>
+                        </li>
+                    </ol>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-purple-400">技术特点</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">🔒</span>
+                            <span>FHE同态加密保护用户隐私</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">⚡</span>
+                            <span>实时余额和进度更新</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">🛡️</span>
+                            <span>防MEV攻击和前置交易</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">🔗</span>
+                            <span>完整的MetaMask集成</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testDonation() {
+            alert('这将打开主平台的捐款功能。请点击"查看项目"按钮体验完整功能。');
+        }
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to project cards
+            const projectCards = document.querySelectorAll('.bg-gray-700');
+            projectCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLaunch - 快速访问</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="gradient-bg py-20">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-8">🚀 CryptoLaunch</h1>
+            <p class="text-xl mb-12">完全机密的区块链筹款平台</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="index.html" 
+                   class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">🏠</div>
+                    <h3 class="text-xl font-semibold mb-2">主页</h3>
+                    <p class="text-sm text-blue-100">平台主页和功能介绍</p>
+                </a>
+                
+                <a href="index.html#launch" 
+                   class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-semibold mb-2">启动项目</h3>
+                    <p class="text-sm text-blue-100">创建新的筹款活动</p>
+                </a>
+                
+                <a href="index.html#campaigns" 
+                   class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">💼</div>
+                    <h3 class="text-xl font-semibold mb-2">项目投资</h3>
+                    <p class="text-sm text-blue-100">浏览和投资项目</p>
+                </a>
+                
+                <a href="index.html#dex" 
+                   class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">🔄</div>
+                    <h3 class="text-xl font-semibold mb-2">Secret DEX</h3>
+                    <p class="text-sm text-blue-100">机密去中心化交易</p>
+                </a>
+            </div>
+            
+            <div class="mt-12 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-4">✨ 使用说明</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                    <div>
+                        <h4 class="font-semibold mb-2">🦊 连接 MetaMask</h4>
+                        <p class="text-sm text-blue-100">点击"连接钱包"按钮连接您的 MetaMask 钱包</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">🔐 机密投资</h4>
+                        <p class="text-sm text-blue-100">所有投资金额都通过 FHE 加密保护隐私</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">💰 项目创建</h4>
+                        <p class="text-sm text-blue-100">创建项目需要连接钱包并设置项目参数</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">🔄 DEX 交易</h4>
+                        <p class="text-sm text-blue-100">支持 ETH/USDT、ETH/USDC、ETH/DAI 交易对</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-sm text-blue-200">
+                    🌐 本地开发环境 | 🔧 端口 3014 | 🔒 FHE 加密保护
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-redirect with section parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href*="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.includes('#')) {
+                        const [url, section] = href.split('#');
+                        if (section) {
+                            // Store section to show after page load
+                            sessionStorage.setItem('showSection', section);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

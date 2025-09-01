@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLaunch - 机密筹款平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        🚀 CryptoLaunch
+                    </h1>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-white bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">首页</a>
+                    <a href="#campaigns" class="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">项目</a>
+                    <a href="#dex" class="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Secret DEX</a>
+                    <a href="#launch" class="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">启动项目</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button id="connectWallet" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        连接钱包
+                    </button>
+                    <div id="walletInfo" class="hidden bg-gray-700 px-4 py-2 rounded-lg text-sm">
+                        <span id="walletAddress">未连接</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-5xl font-bold mb-6">
+                完全机密的区块链筹款平台
+            </h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                使用 Zama FHE 加密技术，实现真正的隐私保护筹款。投资者身份和金额完全保密，创业者获得安全可靠的资金支持。
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="showSection('launch')" class="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-50 transition-colors">
+                    启动项目
+                </button>
+                <button onclick="showSection('campaigns')" class="glassmorphism text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-white/20 transition-colors">
+                    浏览项目
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl font-bold mb-4">为什么选择 CryptoLaunch？</h3>
+                <p class="text-xl text-gray-300">领先的隐私保护技术，打造最安全的筹款环境</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-blue-500 transition-colors">
+                    <div class="text-4xl mb-4">🔐</div>
+                    <h4 class="text-xl font-semibold mb-3">完全机密</h4>
+                    <p class="text-gray-400">采用 Zama FHE 同态加密技术，投资金额和身份信息完全保密，无人能够破解。</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-colors">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h4 class="text-xl font-semibold mb-3">即时部署</h4>
+                    <p class="text-gray-400">一键创建智能合约，自动配置所有参数，3分钟内完成项目上线。</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-pink-500 transition-colors">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h4 class="text-xl font-semibold mb-3">安全可靠</h4>
+                    <p class="text-gray-400">经过严格审计的智能合约，多重安全机制保护，资金安全有保障。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Launch Campaign Section -->
+    <section id="launch" class="py-20 bg-gray-800 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4">启动您的项目</h3>
+                <p class="text-xl text-gray-300">创建机密筹款活动，保护投资者隐私</p>
+            </div>
+            
+            <div class="bg-gray-700 rounded-xl p-8">
+                <form id="launchForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">项目名称 *</label>
+                            <input type="text" id="projectName" required 
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">筹款目标 (ETH) *</label>
+                            <input type="number" id="fundingGoal" required step="0.01" 
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">项目描述 *</label>
+                        <textarea id="projectDescription" rows="4" required
+                                  class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500"></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">代币价格 (ETH)</label>
+                            <input type="number" id="tokenPrice" step="0.001" value="0.01"
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">最小投资 (ETH)</label>
+                            <input type="number" id="minInvestment" step="0.01" value="0.01"
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">筹款天数</label>
+                            <input type="number" id="duration" min="1" max="90" value="30"
+                                   class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:border-blue-500">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg text-lg font-medium transition-all duration-200">
+                        创建项目
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEX Section -->
+    <section id="dex" class="py-20 bg-gray-900 hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4">Secret DEX</h3>
+                <p class="text-xl text-gray-300">完全机密的去中心化交易所</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-blue-400 mb-1">$1.2M</div>
+                    <div class="text-sm text-gray-400">总锁定价值</div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-purple-400 mb-1">45</div>
+                    <div class="text-sm text-gray-400">活跃交易对</div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-pink-400 mb-1">$234K</div>
+                    <div class="text-sm text-gray-400">24小时交易量</div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-2xl font-bold text-green-400 mb-1">1,234</div>
+                    <div class="text-sm text-gray-400">活跃用户</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+                    <h4 class="text-lg font-semibold mb-4">机密交换</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">卖出</label>
+                            <div class="flex">
+                                <input type="number" placeholder="0.0" 
+                                       class="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-l-lg text-white">
+                                <select class="px-4 py-3 bg-gray-700 border border-gray-600 rounded-r-lg text-white">
+                                    <option>ETH</option>
+                                    <option>USDT</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button class="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+                                ⇅
+                            </button>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">买入</label>
+                            <div class="flex">
+                                <input type="number" placeholder="0.0" 
+                                       class="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-l-lg text-white">
+                                <select class="px-4 py-3 bg-gray-700 border border-gray-600 rounded-r-lg text-white">
+                                    <option>USDT</option>
+                                    <option>ETH</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button onclick="executeSwap()" 
+                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
+                            执行机密交换
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+                    <h4 class="text-lg font-semibold mb-4">机密订单簿</h4>
+                    <div class="space-y-2">
+                        <div class="text-xs text-gray-400 grid grid-cols-3 gap-4 py-2 border-b border-gray-700">
+                            <span>价格</span>
+                            <span>数量 (已加密)</span>
+                            <span>总额</span>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded">
+                                <span class="text-red-400">0.0235</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded">
+                                <span class="text-red-400">0.0234</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                            <div class="text-sm grid grid-cols-3 gap-4 py-1 hover:bg-gray-700 rounded">
+                                <span class="text-green-400">0.0233</span>
+                                <span class="text-gray-500 font-mono">***</span>
+                                <span class="text-gray-300">***</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-700 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-white mb-2">隐私特性</h5>
+                        <ul class="text-xs text-gray-400 space-y-1">
+                            <li>• 订单金额完全加密</li>
+                            <li>• 防止 MEV 攻击</li>
+                            <li>• 匿名流动性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaigns Section -->
+    <section id="campaigns" class="py-20 bg-gray-800 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4">活跃项目</h3>
+                <p class="text-xl text-gray-300">发现优质项目，进行机密投资</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Demo Campaign 1 -->
+                <div class="bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-blue-500 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">DeFi Protocol X</h4>
+                        <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">活跃</span>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">
+                        下一代去中心化借贷协议，支持多链资产和创新的流动性挖矿机制。
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">筹款进度</span>
+                            <span class="text-white">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">目标: 500 ETH</span>
+                            <span class="text-gray-400">剩余: 15 天</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showInvestmentModal('DeFi Protocol X')" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        机密投资
+                    </button>
+                </div>
+                
+                <!-- Demo Campaign 2 -->
+                <div class="bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-purple-500 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">GameFi Universe</h4>
+                        <span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">热门</span>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">
+                        元宇宙游戏平台，集成 NFT 交易和 Play-to-Earn 机制。
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">筹款进度</span>
+                            <span class="text-white">42%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">目标: 1000 ETH</span>
+                            <span class="text-gray-400">剩余: 28 天</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showInvestmentModal('GameFi Universe')" 
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        机密投资
+                    </button>
+                </div>
+                
+                <!-- Demo Campaign 3 -->
+                <div class="bg-gray-700 rounded-xl border border-gray-600 p-6 hover:border-green-500 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">AI Trading Bot</h4>
+                        <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">新上线</span>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">
+                        基于机器学习的智能交易机器人，支持多种交易策略。
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">筹款进度</span>
+                            <span class="text-white">12%</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width: 12%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">目标: 300 ETH</span>
+                            <span class="text-gray-400">剩余: 45 天</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showInvestmentModal('AI Trading Bot')" 
+                            class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        机密投资
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Modal -->
+    <div id="investmentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">机密投资</h3>
+                <button onclick="closeInvestmentModal()" class="text-gray-400 hover:text-white">✕</button>
+            </div>
+            
+            <div class="mb-6">
+                <p class="text-sm text-gray-400 mb-2">投资项目: <span id="modalProjectName" class="text-white"></span></p>
+                <p class="text-xs text-gray-500">您的投资金额将通过 FHE 加密，完全保密</p>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">投资金额 (ETH)</label>
+                <input type="number" id="investmentAmount" step="0.01" min="0.01" 
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+            </div>
+            
+            <div class="flex space-x-4">
+                <button onclick="closeInvestmentModal()" 
+                        class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    取消
+                </button>
+                <button onclick="makeInvestment()" 
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    确认投资
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2024 CryptoLaunch. Built with Zama FHE Protocol.</p>
+            <p class="mt-2 text-sm">Confidential • Secure • Innovative</p>
+            <p class="mt-2 text-xs">
+                合约地址: 0x5FbDB...0aa3 | DEX: 0x9fE4...a6e0 | 
+                <span class="text-green-400">✅ 已审计</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let isConnected = false;
+        let userAccount = '';
+
+        // Wallet connection
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('请安装 MetaMask 钱包！');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                userAccount = accounts[0];
+                isConnected = true;
+                
+                document.getElementById('connectWallet').textContent = '已连接';
+                document.getElementById('connectWallet').classList.add('bg-green-600', 'hover:bg-green-700');
+                document.getElementById('connectWallet').classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                
+                document.getElementById('walletInfo').classList.remove('hidden');
+                document.getElementById('walletAddress').textContent = 
+                    userAccount.substring(0, 6) + '...' + userAccount.substring(38);
+                
+                showToast('钱包连接成功！', 'success');
+            } catch (error) {
+                console.error('钱包连接失败:', error);
+                showToast('钱包连接失败', 'error');
+            }
+        }
+
+        // Show sections
+        function showSection(sectionName) {
+            // Hide all sections
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('launch').classList.add('hidden');
+            document.getElementById('campaigns').classList.add('hidden');
+            document.getElementById('dex').classList.add('hidden');
+            
+            // Show selected section
+            if (sectionName === 'home') {
+                document.getElementById('home').style.display = 'block';
+            } else {
+                document.getElementById(sectionName).classList.remove('hidden');
+            }
+            
+            // Update nav active state
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('text-white', 'bg-gray-700');
+                a.classList.add('text-gray-300', 'hover:text-white', 'hover:bg-gray-700');
+            });
+            
+            document.querySelector(`nav a[href="#${sectionName}"]`)?.classList.add('text-white', 'bg-gray-700');
+        }
+
+        // Launch campaign
+        document.getElementById('launchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!isConnected) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('projectName').value,
+                description: document.getElementById('projectDescription').value,
+                fundingGoal: document.getElementById('fundingGoal').value,
+                tokenPrice: document.getElementById('tokenPrice').value,
+                minInvestment: document.getElementById('minInvestment').value,
+                duration: document.getElementById('duration').value
+            };
+            
+            showToast('正在创建项目...', 'info');
+            
+            // Simulate blockchain transaction
+            setTimeout(() => {
+                showToast('项目创建成功！交易哈希: 0x1234...5678', 'success');
+                document.getElementById('launchForm').reset();
+            }, 2000);
+        });
+
+        // Investment modal
+        function showInvestmentModal(projectName) {
+            if (!isConnected) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            document.getElementById('modalProjectName').textContent = projectName;
+            document.getElementById('investmentModal').classList.remove('hidden');
+        }
+
+        function closeInvestmentModal() {
+            document.getElementById('investmentModal').classList.add('hidden');
+            document.getElementById('investmentAmount').value = '';
+        }
+
+        function makeInvestment() {
+            const amount = document.getElementById('investmentAmount').value;
+            const projectName = document.getElementById('modalProjectName').textContent;
+            
+            if (!amount || amount <= 0) {
+                showToast('请输入有效的投资金额', 'error');
+                return;
+            }
+            
+            showToast('正在处理机密投资...', 'info');
+            closeInvestmentModal();
+            
+            // Simulate encrypted investment
+            setTimeout(() => {
+                showToast(`成功投资 ${amount} ETH 到 "${projectName}"！投资已加密保护。`, 'success');
+            }, 2000);
+        }
+
+        // Execute swap
+        function executeSwap() {
+            if (!isConnected) {
+                showToast('请先连接钱包', 'error');
+                return;
+            }
+            
+            showToast('正在执行机密交换...', 'info');
+            
+            setTimeout(() => {
+                showToast('交换成功！交易已通过 FHE 加密保护。', 'success');
+            }, 2000);
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : 
+                          type === 'error' ? 'bg-red-600' : 'bg-blue-600';
+            
+            toast.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Initialize
+        document.getElementById('connectWallet').addEventListener('click', connectWallet);
+        
+        // Navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionName = this.getAttribute('href').substring(1);
+                showSection(sectionName);
+            });
+        });
+
+        // Auto-detect wallet
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function(accounts) {
+                if (accounts.length === 0) {
+                    isConnected = false;
+                    userAccount = '';
+                    document.getElementById('connectWallet').textContent = '连接钱包';
+                    document.getElementById('connectWallet').classList.remove('bg-green-600', 'hover:bg-green-700');
+                    document.getElementById('connectWallet').classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    document.getElementById('walletInfo').classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
